@@ -1,0 +1,218 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Salary Slip</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        @page {
+            size: a4 portrait;
+
+            @frame header_frame {
+                /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 35pt;
+                width: 512pt;
+                top: 40pt;
+                height: 120pt;
+            }
+
+            @frame content_frame {
+                /* Content Frame */
+                left: 35pt;
+                width: 512pt;
+                top: 150pt;
+                height: 1000pt;
+            }
+
+            @frame footer_frame {
+                /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 35pt;
+                width: 512pt;
+                top: 772pt;
+                height: 20pt;
+            }
+        }
+
+        tr {
+            border: 1px solid grey;
+            width: 100%;
+        }
+
+        td {
+            border: 1px solid grey;
+            line-height: 3px;
+            padding: 1px;
+            width: 25%;
+        }
+
+        .tc {
+            text-align: center;
+        }
+
+        .b_0 {
+            border: 0px;
+        }
+
+        .bt_5 {
+            border-top: 5px solid black;
+        }
+
+        .bg_lg {
+            background-color: lightgray;
+        }
+
+        .by_1 {
+            border-top: 1px solid black;
+            border-left: 0px;
+            border-right: 0px;
+            border-bottom: 1px solid black;
+        }
+
+        .bb_1_grey {
+            border-bottom: 1px solid lightgrey;
+        }
+
+        .bb_1_black {
+            border-bottom: 1px solid black;
+        }
+
+        td {
+            font-size: 10pt;
+            padding: 3px 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header_content">
+        <table class="b_0">
+            <tr class="b_0">
+                <td rowspan="4" colspan="2" class="b_0">
+                    <img src="{% static 'img/logo.png' %}" alt="Laxmi Car Service" width="125px">
+                </td>
+                <td colspan="10" class="b_0">
+                    <h1 style="text-transform: uppercase; font-size: 20pt;">{{supplier.name}}</h1>
+                </td>
+            </tr>
+            <tr class="b_0">
+                <td colspan="10" style="text-wrap-style: balance;font-size: 10pt;" class="b_0">
+                    {{supplier.address}}
+                </td>
+            </tr>
+            <tr class="b_0">
+                <td colspan="3" class="b_0"><span><b>Mobile: </b>{{supplier.mobile|default_if_none:''}}</span></td>
+                <td colspan="3" class="b_0"><span><b>GSTIN: </b>{{supplier.gstin|default_if_none:''}}</span></td>
+                <td colspan="4" class="b_0" style="text-align: right;"><span><b>PAN Number: </b>
+                        {{supplier.pan|default_if_none:''}}</span></td>
+            </tr>
+            <tr class="b_0">
+                <td colspan="10" class="b_0">
+                    <b>Email: </b>
+                    {{supplier.email|default_if_none:'' }}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table>
+            <tr class="bg_lg b_0">
+                <td colspan="7" class="b_0 bt_5">
+                    <b>Invoice No.: </b>
+                    {{invoice.invoice_no}}
+                </td>
+                <td colspan="5" class="b_0 bt_5" style="text-align: right;">
+                    <b>Invoice Date: </b>
+                    {{invoice.inserted_On}}
+                </td>
+            </tr>
+
+            <tr class="b_0">
+                <td colspan="6" class="b_0" style="vertical-align: top;">
+                    <b>BILL TO</b><br>
+                    <b>{{invoice.buyer.name}}</b><br>
+                    {{invoice.buyer.address}}
+                </td>
+                <td colspan="6" class="b_0" style="vertical-align: top;">
+                    <b>SHIP TO</b><br>
+                    <b>{{invoice.shipTo.name}}</b><br>
+                    {{invoice.shipTo.address}}
+                </td>
+            </tr>
+
+            <tr class="by_1" style="margin-top: 2rem;">
+                <td colspan="2" class="b_0">ITEMS/SERVICES </td>
+                <td colspan="2" class="b_0">HSN/SAC </td>
+                <td colspan="2" class="b_0" style="width: 100px;">QTY. </td>
+                <td colspan="2" class="b_0" style="width: 100px;">RATE</td>
+                <td colspan="2" class="b_0">TAX</td>
+                <td colspan="2" class="b_0">AMOUNT</td>
+            </tr>
+
+            {% for x in invoice_items %}
+            <tr class="b_0 bb_1_grey">
+                <td colspan="2" class="b_0">{{x.item}}</td>
+                <td colspan="2" class="b_0">{{x.qty}}</td>
+                <td colspan="2" class="b_0">{{x.qty}}</td>
+                <td colspan="2" class="b_0">{{x.rate}}</td>
+                <td colspan="2" class="b_0">{{x.tax_amt}}</td>
+                <td colspan="2" class="b_0">{{x.total_amount}}</td>
+            </tr>
+            {% endfor %}
+
+            <tr class="b_0 bb_1_black">
+                <td colspan="4" class="b_0">SUBTOTAL</td>
+                <td colspan="4" class="b_0">{{invoice.invoice_qty}}</td>
+                <td colspan="2" class="b_0">{{invoice.invoice_tax}}</td>
+                <td colspan="2" class="b_0">{{invoice.invoice_total_amt}}</td>
+            </tr>
+
+            <tr class="b_0">
+                <td class="b_0" rowspan="{{ invoice.tax_def|length|add:'2' }}" colspan="8" style="vertical-align:top;">
+                    TERMS AND CONDITIONS<br>1. Goods
+                    once sold will not be taken back or exchanged
+                    <br>2. All disputes are subject to Mumbai
+                    jurisdiction only
+                </td>
+                <td class="b_0" colspan="2">TAXABLE AMOUNT</td>
+                <td class="b_0" colspan="2">{{invoice.invoice_total}}</td>
+            </tr>
+
+            {% for x in invoice.tax_def %}
+            <tr class="b_0">
+                {% for j,k in x.items %}
+                <td colspan="2" class="b_0 bb_1_grey">{{j}}</td>
+                <td colspan="2" class="b_0 bb_1_grey"> {{k}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+            <tr class="b_0">
+                <td colspan="2" class="b_0 by_1">TOTAL AMOUNT</td>
+                <td colspan="2" class="b_0 by_1">{{invoice.invoice_total_amt}}</td>
+            </tr>
+
+            <tr class="b_0">
+                <td colspan="8" class="b_0"></td>
+                <td colspan="4" class="b_0">
+                    Total Amount (in words)
+                </td>
+            </tr>
+            <tr class="b_0">
+                <td colspan="8" class="b_0"></td>
+                <td colspan="4" class="b_0" style="text-wrap-style: balance;">
+                    {{invoice.invoice_total_in_words}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

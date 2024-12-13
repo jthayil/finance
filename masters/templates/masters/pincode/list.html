@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}
+<link
+    href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/fh-4.0.1/sc-2.4.3/sb-1.8.1/datatables.min.css"
+    rel="stylesheet">
+{% endblock %}
+{% block body %}
+<h1>PINCODE MASTER</h1>
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="myTable">
+                <thead>
+                    <th>ID</th>
+                    <th>COUNTRY</th>
+                    <th>STATE</th>
+                    <th>CITY</th>
+                    <th>PINCODE</th>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script
+    src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/date-1.5.4/fh-4.0.1/sc-2.4.3/sb-1.8.1/sp-2.3.3/sr-1.4.1/datatables.min.js"></script>
+<script>
+    var city_url = "{% url 'masters:pincode_list_api' %}";
+    function load_cities() {
+        mt_users = new DataTable('#myTable', {
+            searching: true,
+            lengthChange: true,
+            info: true,
+            paging: true,
+            ajax: {
+                url: city_url,
+                dataSrc: ''
+            },
+            columns: [
+                { data: 'id' },
+                { data: 'country' },
+                { data: 'state' },
+                { data: 'city' },
+                { data: 'pincode' },
+            ],
+        });
+    }
+    load_cities();
+</script>
+{% endblock %}

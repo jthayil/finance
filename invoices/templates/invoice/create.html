@@ -1,0 +1,92 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}{% endblock %}
+{% block body %}
+<form action="" method="post">{% csrf_token %}
+    <div class="card">
+        <div class="card-header">
+            NEW INVOICE
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-3 col-lg-2">
+                    <label class="form-label" for="id_invoice_no">Invoice No</label>
+                    <input class="form-control" type="number" name="invoice_no" id="id_invoice_no">
+                    <input value="{{request.user.id}}" type="hidden" name="user" id="id_user">
+                </div>
+                <!-- <div class="col-sm-12 col-md-6 col-lg-6">
+                    <label class="form-label" for="">Seller</label>
+                    {% for vendor in vendors %}
+                    {% if vendor.provider == True %}
+                    <textarea class="form-control" name="" id="" rows="6">{{vendor.name}}&#10;{{vendor.address}}</textarea>
+                    {% endif %}
+                    {% endfor %}
+                </div> -->
+                <div class="col-sm-12 col-md-6 col-lg-5">
+                    <label class="form-label" for="id_buyer">Bill To</label>
+                    <select class="form-select" name="buyer" id="id_buyer">
+                        {% for vendor in vendors %}
+                        {% if vendor.provider == False %}
+                        <option value="{{vendor.id}}"{% if vendor.id == form.vendor %}selected{% endif %}>
+                            {{vendor.name}} ( {{vendor.address}} )
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-5">
+                    <label class="form-label" for="id_shipTo">Ship To</label>
+                    <select class="form-select" name="shipTo" id="id_shipTo">
+                        {% for vendor in vendors %}
+                        {% if vendor.provider == False %}
+                        <option value="{{vendor.id}}"{% if vendor.id == form.vendor %}selected{% endif %}>
+                            {{vendor.name}} ( {{vendor.address}} )
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mt-3 d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modal-small">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                        <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                        <path d="M14 4l0 4l-6 0l0 -4" />
+                    </svg> 
+                    GENERATE
+                </button>
+                <button type="submit" class="btn btn-outline-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 5l0 14" />
+                        <path d="M5 12l14 0" />
+                    </svg> 
+                    ADD ITEM
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-blur fade" id="modal-small" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="modal-title">Generate Invoice</div>
+              <div>Proceed with invoice generation ? </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger me-auto" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" formaction="{% url 'invoices:invoice_create' %}" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</form>
+{% endblock %}

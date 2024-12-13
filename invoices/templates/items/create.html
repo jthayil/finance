@@ -1,0 +1,113 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}{% endblock %}
+{% block body %}
+<form action="" method="post">{% csrf_token %}
+    <div class="card">
+        <div class="card-header">
+            ADD INVOICE ITEM
+        </div>
+        <div class="card-body">
+            <input value="{{invoice.id}}" type="hidden" name="invoice_id" id="id_invoice_id">
+            <input value="" type="hidden" name="inventory_id" id="id_inventory_id">
+            <div class="row">
+                <div class="col-sm-12 col-md-3 col-lg-2">
+                    <label class="form-label" for="id_item">Item</label>
+                    <input class="form-control" autocomplete="off" type="text" name="item"
+                        id="id_item" list="inventory">
+                    <datalist id="inventory">
+                        {% for item in inventory %}
+                        <option value="{{item.name}}">{{item.description}}</option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2">
+                    <label class="form-label" for="id_qty">Quantity</label>
+                    <input value="{{invoice_item.qty|default:0}}" type="number" name="qty" id="id_qty"
+                        class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2">
+                    <label class="form-label" for="id_rate">Rate</label>
+                    <input value="{{invoice_item.rate|default:0}}" type="tel" name="rate" id="id_rate"
+                        class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2">
+                    <label class="form-label" for="id_sgst">SGST</label>
+                    <input value="{{invoice_item.sgst|default:0}}" type="number" name="sgst" id="id_sgst" class="form-control" {% if igst_flag %}readonly{% endif %}>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2">
+                    <label class="form-label" for="id_cgst">CGST</label>
+                    <input value="{{invoice_item.cgst|default:0}}" type="number" name="cgst" id="id_cgst" class="form-control" {% if igst_flag %}readonly{% endif %}>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2">
+                    <label class="form-label" for="id_igst">IGST</label>
+                    <input value="{{invoice_item.igst|default:0}}" type="number" name="igst" id="id_igst" class="form-control" {% if not igst_flag %}readonly{% endif %}>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mt-3 d-flex justify-content-between">
+                    <a href="" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modal-small">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M18 6l-12 12" />
+                            <path d="M6 6l12 12" />
+                        </svg>
+                        CANCEL
+                    </a>
+                    <button type="submit" class="btn btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                            <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M14 4l0 4l-6 0l0 -4" />
+                        </svg>
+                        SAVE ITEM
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-blur fade" id="modal-small" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-title">Generate Invoice</div>
+                    <div>Proceed with invoice generation ? </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger me-auto" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" formaction="{% url 'invoices:invoice_create' %}" class="btn btn-primary"
+                        data-bs-dismiss="modal">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block script %}
+<script>
+    {% if igst_flag %}
+    var igst_flag = true;
+    {% else %}
+    var igst_flag = false;
+    {% endif %}
+    var inventory_url = `{% url 'masters:inventory_list_api' %}`;
+
+    $(document).on("change", "#id_item", function () {
+        var item_name = $(this).val();
+        var url = inventory_url + '?name=' + item_name;
+        var res = getRemote(url);
+        var item = res[0];
+        if (igst_flag){
+            $("#id_igst").val(item["igst"]);
+        } else {
+            $("#id_cgst").val(item["cgst"]);
+            $("#id_sgst").val(item["sgst"]);
+        }
+        $("#id_rate").val(item["rate"]);
+        $("#id_qty").val(item["qty"]);
+    });
+</script>
+{% endblock %}

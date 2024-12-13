@@ -1,0 +1,47 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Sign Up{% endblock %}
+
+{% block body %}
+<div class="container container-tight" style="padding-left: 30vw;padding-right: 30vw;">
+    <div class="card card-md">
+        <div class="card-header">
+            <h1 class="m-0">REGISTER</h1>
+        </div>
+        <div class="card-body p-3">
+            <form method="post" autocomplete="off" novalidate>
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label class="form-label" for="id_first_name">First name:</label>
+                    <input class="form-control" type="text" name="first_name" maxlength="150" id="id_first_name">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" for="id_last_name">Last name:</label>
+                    <input class="form-control" type="text" name="last_name" maxlength="150" id="id_last_name">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" for="id_email">Email address:</label>
+                    <input class="form-control" type="email" name="email" maxlength="254" id="id_email">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" for="id_password1">New Password:</label>
+                    <input class="form-control" type="password" name="password1" autocomplete="new-password"
+                    aria-describedby="id_password1_helptext" id="id_password1">
+                    <div class="helptext" id="id_password1_helptext">
+                        <ul>
+                            <li>Your password must contain at least 8 characters.</li>
+                            <li>Your password can't be entirely numeric.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" for="id_password2">Confirm Password</label>
+                    <input class="form-control" type="password" name="password2" autocomplete="new-password"
+                    aria-describedby="id_password2_helptext" id="id_password2">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
