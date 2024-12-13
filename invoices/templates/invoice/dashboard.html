@@ -1,0 +1,404 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+{% block style %}{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-2">Dashboard</h1>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="row">
+                            <div class="col-2 d-flex">
+                                <div class="">Filter:&nbsp;</div>
+                                <select class="form-select form-select-sm">
+                                    <option value="1">Last Month</option>
+                                    <option value="2">This Month</option>
+                                    <option value="3">Last Quarter</option>
+                                    <option value="4">Half Year</option>
+                                    <option value="5">Year</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="card card-sm">
+                            <div class="card-body p-1">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-primary text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-truck-return">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                                <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                                <path d="M5 17h-2v-11a1 1 0 0 1 1 -1h9v6h-5l2 2m0 -4l-2 2" />
+                                                <path d="M9 17l6 0" />
+                                                <path d="M13 6h5l3 5v6h-2" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">Order</div>
+                                        <div class="text-secondary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M18 5h-11h3a4 4 0 0 1 0 8h-3l6 6" />
+                                                <path d="M7 9l11 0" />
+                                            </svg>
+                                            12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="card card-sm">
+                            <div class="card-body p-1">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-primary text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-file-dollar">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                <path
+                                                    d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                <path d="M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
+                                                <path d="M12 17v1m0 -8v1" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">Invoice</div>
+                                        <div class="text-secondary">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M18 5h-11h3a4 4 0 0 1 0 8h-3l6 6" />
+                                                <path d="M7 9l11 0" />
+                                            </svg>
+                                            12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="card card-sm">
+                            <div class="card-body p-1">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-primary text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-sitemap">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M3 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                <path
+                                                    d="M15 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                <path
+                                                    d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                <path d="M6 15v-1a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v1" />
+                                                <path d="M12 9l0 3" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">TDS</div>
+                                        <div class="text-secondary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M18 5h-11h3a4 4 0 0 1 0 8h-3l6 6" />
+                                                <path d="M7 9l11 0" />
+                                            </svg>
+                                            12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="card card-sm">
+                            <div class="card-body p-1">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-primary text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-cash-register">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M21 15h-2.5c-.398 0 -.779 .158 -1.061 .439c-.281 .281 -.439 .663 -.439 1.061c0 .398 .158 .779 .439 1.061c.281 .281 .663 .439 1.061 .439h1c.398 0 .779 .158 1.061 .439c.281 .281 .439 .663 .439 1.061c0 .398 -.158 .779 -.439 1.061c-.281 .281 -.663 .439 -1.061 .439h-2.5" />
+                                                <path d="M19 21v1m0 -8v1" />
+                                                <path
+                                                    d="M13 21h-7c-.53 0 -1.039 -.211 -1.414 -.586c-.375 -.375 -.586 -.884 -.586 -1.414v-10c0 -.53 .211 -1.039 .586 -1.414c.375 -.375 .884 -.586 1.414 -.586h2m12 3.12v-1.12c0 -.53 -.211 -1.039 -.586 -1.414c-.375 -.375 -.884 -.586 -1.414 -.586h-2" />
+                                                <path
+                                                    d="M16 10v-6c0 -.53 -.211 -1.039 -.586 -1.414c-.375 -.375 -.884 -.586 -1.414 -.586h-4c-.53 0 -1.039 .211 -1.414 .586c-.375 .375 -.586 .884 -.586 1.414v6m8 0h-8m8 0h1m-9 0h-1" />
+                                                <path d="M8 14v.01" />
+                                                <path d="M8 17v.01" />
+                                                <path d="M12 13.99v.01" />
+                                                <path d="M12 17v.01" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">Payments</div>
+                                        <div class="text-secondary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M18 5h-11h3a4 4 0 0 1 0 8h-3l6 6" />
+                                                <path d="M7 9l11 0" />
+                                            </svg>
+                                            12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="card card-sm">
+                            <div class="card-body p-1">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-primary text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path
+                                                    d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2">
+                                                </path>
+                                                <path d="M12 3v3m0 12v3"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">Total</div>
+                                        <div class="text-secondary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M18 5h-11h3a4 4 0 0 1 0 8h-3l6 6" />
+                                                <path d="M7 9l11 0" />
+                                            </svg>
+                                            12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-2">
+                        <div class="card card-sm">
+                            <div class="card-body p-1">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-primary text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path
+                                                    d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2">
+                                                </path>
+                                                <path d="M12 3v3m0 12v3"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">Balance</div>
+                                        <div class="text-secondary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M18 5h-11h3a4 4 0 0 1 0 8h-3l6 6" />
+                                                <path d="M7 9l11 0" />
+                                            </svg>
+                                            12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-4 mt-2">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <strong>PAYMENT AGEING INVOICES</strong>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-vcenter card-table table-bordered table-striped table-hover">
+                                <thead>
+                                    <th>Company</th>
+                                    <th>Invoice</th>
+                                    <th>Inv. Amount</th>
+                                    <th>Balance Amount</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Tata Motors</td>
+                                        <td>123456</td>
+                                        <td>2500000</td>
+                                        <td>3432100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tata Motors</td>
+                                        <td>123456</td>
+                                        <td>2500000</td>
+                                        <td>3432100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tata Motors</td>
+                                        <td>123456</td>
+                                        <td>2500000</td>
+                                        <td>3432100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tata Motors</td>
+                                        <td>123456</td>
+                                        <td>2500000</td>
+                                        <td>3432100</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4 mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        MONTHLY ORDER
+                    </div>
+                    <div class="card-body">
+                        <div id="monthly_orders"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4 mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        MONTHLY SALES
+                    </div>
+                    <div class="card-body">
+                        <div id="monthly_sales"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}" defer></script>
+<script>
+    // @formatter:off
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('monthly_orders'), {
+            chart: {
+                type: "line",
+                fontFamily: 'inherit',
+                height: 200,
+                parentHeightOffset: 0,
+                toolbar: { show: false, },
+                animations: { enabled: false },
+            },
+            fill: { opacity: 1, },
+            stroke: { width: 2, lineCap: "round", curve: "straight", },
+            series: [{
+                name: "Orders ",
+                data: [8, 10, 11, 12, 20, 27, 30]
+            }],
+            tooltip: { theme: 'dark' },
+            grid: {
+                padding: { top: -20, right: 0, left: -4, bottom: -4 },
+                strokeDashArray: 4,
+            },
+            xaxis: {
+                labels: { padding: 0, },
+                tooltip: { enabled: false },
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            },
+            yaxis: { labels: { padding: 4 }, },
+            colors: [tabler.getColor("orange"), tabler.getColor("primary"), tabler.getColor("green")],
+            legend: {
+                show: false,
+            },
+        })).render();
+
+        window.ApexCharts && (new ApexCharts(document.getElementById('monthly_sales'), {
+            chart: {
+                type: "line",
+                fontFamily: 'inherit',
+                height: 200,
+                parentHeightOffset: 0,
+                toolbar: { show: false, },
+                animations: { enabled: false },
+            },
+            fill: { opacity: 1, },
+            stroke: { width: 2, lineCap: "round", curve: "straight", },
+            series: [{ name: "Sales ₹ ", data: [80000, 100000, 110000, 120000, 200000, 270000, 300000] }],
+            tooltip: { theme: 'dark' },
+            grid: {
+                padding: { top: -20, right: 0, left: -4, bottom: -4 },
+                strokeDashArray: 4,
+            },
+            xaxis: {
+                labels: { padding: 0, },
+                tooltip: { enabled: false },
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            },
+            yaxis: { labels: { padding: 4 }, },
+            colors: [tabler.getColor("orange"), tabler.getColor("primary"), tabler.getColor("green")],
+            legend: { show: false, },
+        })).render();
+    });
+    // @formatter:on
+</script>
+{% endblock %}

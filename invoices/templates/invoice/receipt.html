@@ -1,0 +1,132 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Laxmi Car Service</title>
+</head>
+
+<body>
+    <div class="card mx-auto" style="font-size: small;max-width: 512pt;">
+        <a href="{% url 'invoices:invoice_pdf' invoice.id  %}" class="card-header btn w-100">
+            Print Invoice
+        </a>
+        <div class="row m-4">
+            <div class="col-2">
+                <img src="{% static 'img/logo.png' %}" alt="Laxmi Car Service" width="75px">
+            </div>
+            <div class="col-10">
+                <h1 class="mb-1" style="text-transform: uppercase;">{{supplier.name}}</h1>
+                <p class="mb-0">{{supplier.address}}</p>
+                <div class="d-flex justify-content-between">
+                    <span><b>Mobile: </b>{{supplier.mobile|default_if_none:''}}</span>
+                    <span><b>GSTIN: </b>{{supplier.gstin|default_if_none:''}}</span>
+                    <span><b>PAN Number: </b> {{supplier.pan|default_if_none:''}}</span>
+                </div>
+                <p><b>Email: </b> {{supplier.email|default_if_none:'' }}</p>
+            </div>
+            <div class="col-12" style="border: 3px solid black;"></div>
+            <div class="col-12 d-flex justify-content-between" style="background-color: #e5e5e5;">
+                <div><b>Invoice No.: </b>
+                {% if invoice.status == 1 %}
+                {{invoice.invoice_no}}
+                {% endif %}</div>
+                <div><b>Invoice Date: </b>{{invoice.inserted_On}}</div>
+            </div>
+            <div class="col-6">
+                <b>BILL TO</b><br>
+                <b>{{invoice.buyer.name}}</b><br>
+                {{invoice.buyer.address}}
+            </div>
+            <div class="col-6">
+                <b>SHIP TO</b><br>
+                <b>{{invoice.shipTo.name}}</b><br>
+                {{invoice.shipTo.address}}
+            </div>
+            <div class="col-12">
+                <table class="table table-sm table hover">
+                    <thead style="border-bottom: 2px solid black; border-top: 2px solid black;">
+                        <th>ITEMS/SERVICES </th>
+                        <th>HSN/SAC </th>
+                        <th>QTY. </th>
+                        <th>RATE</th>
+                        <th>TAX</th>
+                        <th>AMOUNT</th>
+                    </thead>
+                    <tbody>
+                        {% for x in invoice_items %}
+                        <tr style="border-bottom: 2px solid #dfdfdf;">
+                            <td>{{x.item}}</td>
+                            <td>{{x.qty}}</td>
+                            <td>{{x.qty}}</td>
+                            <td>{{x.rate}}</td>
+                            <td>{{x.tax_amt}}</td>
+                            <td>{{x.total_amount}}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr style="border-bottom: 2px solid black; border-top: 2px solid black;">
+                            <td colspan="2">SUBTOTAL</td>
+                            <td colspan="2">{{invoice.invoice_qty}}</td>
+                            <td>₹ {{invoice.invoice_tax}}</td>
+                            <td>₹ {{invoice.invoice_total_amt}}</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="{{ invoice.tax_def|length|add:'3' }}" style="border: 0px !important;"
+                                colspan="4">TERMS AND CONDITIONS<br>1. Goods
+                                once sold will not be taken back or exchanged
+                                <br>2. All disputes are subject to Mumbai
+                                jurisdiction only
+                            </td>
+                            <td>TAXABLE AMOUNT</td>
+                            <td>{{invoice.invoice_total}}</td>
+                        </tr>
+                        {% for x in invoice.tax_def %}
+                        <tr>
+                            {% for j,k in x.items %}
+                            <td>{{j}}</td>
+                            <td>{{k}}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                        <tr style="border-top: 2px solid black;">
+                            <td>TOTAL AMOUNT</td>
+                            <td>{{invoice.invoice_total_amt}}</td>
+                        </tr>
+                        <tr style="border-top: 2px solid black;">
+                            <td style="border: 0px !important;"></td>
+                            <td style="border: 0px !important;"></td>
+                        </tr>
+                        <tr style="border: 0px !important;">
+                            <td colspan="4" style="border: 0px !important;"></td>
+                            <td colspan="2" style="border: 0px !important;">
+                                Total Amount (in words)
+                            </td>
+                        </tr>
+                        <tr style="border: 0px!important;">
+                            <td colspan="4" style="border: 0px !important;"></td>
+                            <td colspan="2" style="border: 0px !important;">
+                                {{invoice.invoice_total_in_words}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // window.onload = function () {
+        //     window.print();
+        // };
+    </script>
+</body>
+
+</html>

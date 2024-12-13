@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}{% endblock %}
+{% block body %}
+<form action="" method="post">{% csrf_token %}
+  <h1>EDIT USER
+    <button type="submit" class="btn btn-outline-cyan btn-pill" style="float: right;margin-right: auto;">
+      UPDATE&nbsp; &nbsp;
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right m-0">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12l14 0" />
+        <path d="M13 18l6 -6" />
+        <path d="M13 6l6 6" />
+      </svg></button>
+    <a href="{% url 'masters:user_list' %}" class="btn btn-outline-cyan btn-pill"
+      style="float: right;margin-right: 1rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12l14 0" />
+        <path d="M5 12l6 6" />
+        <path d="M5 12l6 -6" />
+      </svg>BACK
+    </a>
+  </h1>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-md-4 col-lg-2">
+          <label class="form-label required" for="id_first_name">First Name</label>
+          <input value="{{user.first_name}}" type="text" class="form-control" name="first_name" id="id_first_name"
+            required>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-2">
+          <label class="form-label required" for="id_last_name">Last Name</label>
+          <input value="{{user.last_name}}" type="text" class="form-control" name="last_name" id="id_last_name"
+            required>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-2">
+          <label class="form-label required" for="id_username">User Name</label>
+          <input value="{{user.username}}" type="text" class="form-control" name="username" id="id_username" required>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-3">
+          <label class="form-label required" for="id_email">Email</label>
+          <input value="{{user.email}}" type="text" class="form-control" name="email" id="id_email" required>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+{% block script %}
+<script>
+  $(document).on("click", ".masters_index", function () {
+    var item_id = $(this).data('id');
+    var url = fingerpost_url.slice(0, -2) + item_id + '/';
+    window.open(url, "_blank");
+  });
+</script>
+{% endblock %}

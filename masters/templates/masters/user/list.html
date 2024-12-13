@@ -1,0 +1,105 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}
+<link
+    href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/fh-4.0.1/sc-2.4.3/sb-1.8.1/datatables.min.css"
+    rel="stylesheet">
+    <style>
+        .user_edit{
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<h1>USER MASTER
+    <a href="{% url 'masters:user_create' %}" class="btn btn-outline-cyan btn-pill" style="float: right;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 5l0 14" />
+            <path d="M5 12l14 0" />
+        </svg>ADD
+    </a>
+</h1>
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="myTable">
+                <thead>
+                    <th>ID</th>
+                    <th>FIRST NAME</th>
+                    <th>LAST NAME</th>
+                    <th>USERNAME</th>
+                    <th>EMAIL</th>
+                    <th>ADMIN</th>
+                    <th>STATUS</th>
+                </thead>
+                <tbody>
+                    {% for x in users %}
+                    <tr class="user_edit" data-id="{{x.id}}">
+                        <td>{{x.id}}</td>
+                        <td>{{x.first_name}}</td>
+                        <td>{{x.last_name}}</td>
+                        <td>{{x.username}}</td>
+                        <td>{{x.email}}</td>
+                        <td>
+                            {% if x.is_superuser %}
+                            <svg class="text-success" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M5 12l5 5l10 -10" />
+                            </svg>
+                            {% else %}
+                            <svg class="text-danger" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M18 6l-12 12" />
+                                <path d="M6 6l12 12" />
+                            </svg>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if x.is_active %}
+                            <svg class="text-success" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M5 12l5 5l10 -10" />
+                            </svg>
+                            {% else %}
+                            <svg class="text-danger" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M18 6l-12 12" />
+                                <path d="M6 6l12 12" />
+                            </svg>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script
+    src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/fh-4.0.1/sc-2.4.3/sb-1.8.1/datatables.min.js"></script>
+<script>
+    let table = new DataTable('#myTable');
+    let user_edit_url = `{% url 'masters:user_edit' 0 %}`;
+
+    $(document).on("click", ".user_edit", function () {
+        var item_id = $(this).data('id');
+        var url = user_edit_url.slice(0, -2) + item_id + '/';
+        window.location.href = url;
+    });
+</script>
+{% endblock %}

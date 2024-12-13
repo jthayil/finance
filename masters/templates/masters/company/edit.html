@@ -1,0 +1,119 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}{% endblock %}
+{% block body %}
+<form action="" method="post">{% csrf_token %}
+  <h1>ADD COMPANY
+    <button type="submit" class="btn btn-outline-cyan btn-pill" style="float: right;margin-right: auto;">
+      SAVE&nbsp; &nbsp;
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right m-0">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12l14 0" />
+        <path d="M13 18l6 -6" />
+        <path d="M13 6l6 6" />
+      </svg></button>
+    <a href="{% url 'masters:company_list' %}" class="btn btn-outline-cyan btn-pill"
+      style="float: right;margin-right: 1rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12l14 0" />
+        <path d="M5 12l6 6" />
+        <path d="M5 12l6 -6" />
+      </svg>BACK
+    </a>
+  </h1>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+
+        <div class="col-sm-12 col-md-4 col-lg-3">
+          <label class="form-label required" for="id_name">Company Name</label>
+          <input value="{{company.name}}" type="text" class="form-control" name="name" id="id_name" required>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-3">
+          <label class="form-label required" for="id_email">Email</label>
+          <input value="{{company.email}}" type="email" class="form-control" name="email" id="id_email" required>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-2">
+          <label class="form-label required" for="id_mobile">Mobile</label>
+          <input value="{{company.mobile}}" type="number" class="form-control" name="mobile" id="id_mobile" required>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-2">
+          <label class="form-label required" for="id_gstin">GST</label>
+          <input value="{{company.gstin}}" type="tel" class="form-control" name="gstin" id="id_gstin" required>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-2">
+          <label class="form-label required" for="id_pan">PAN</label>
+          <input value="{{company.pan}}" type="text" class="form-control" name="pan" id="id_pan" required>
+        </div>
+
+        <input value="{{company.state}}" type="hidden" name="state" id="id_state">
+
+        <div class="col-sm-12 col-md-4 col-lg-3 mt-3">
+          <label class="form-label required" for="id_bank_account_holder">Account Holder</label>
+          <input value="{{company.bank_account_holder}}" type="text" class="form-control" name="bank_account_holder" id="id_bank_account_holder" required>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-3 mt-3">
+          <label class="form-label required" for="id_bank">Bank</label>
+          <input value="{{company.bank}}" type="text" class="form-control" name="bank" id="id_bank" required>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-2 mt-3">
+          <label class="form-label required" for="id_bank_no">Account No</label>
+          <input value="{{company.bank_no}}" type="text" class="form-control" name="bank_no" id="id_bank_no" required>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-2 mt-3">
+          <label class="form-label required" for="id_bank_ifsc">IFSC</label>
+          <input value="{{company.bank_ifsc}}" type="text" class="form-control" name="bank_ifsc" id="id_bank_ifsc" required>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-1 mt-3">
+          <label class="form-label required" for="id_pincode">Pincode</label>
+          <input value="{{company.pincode}}" type="tel" class="form-control" name="pincode" id="id_pincode_id" required>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-1 mt-3">
+          <label class="form-label" for="id_provider">Supplier</label>
+          <input {% if company.provider %}checked{% endif %} type="checkbox" class="form-check-input" name="provider" id="id_provider">
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-6 mt-3">
+          <label class="form-label required" for="id_bank_branch">Branch Address</label>
+          <textarea class="form-control" name="bank_branch" id="id_bank_branch" cols="30" rows="3" required>{{company.bank_branch}}</textarea>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 mt-3">
+          <label class="form-label required" for="id_address">Company Address</label>
+          <textarea class="form-control" name="address" id="id_address" cols="30" rows="3" required>{{company.address}}</textarea>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+{% block script %}
+<script>
+  var pincode_url = `{% url 'masters:pincode_list_api' %}`;
+
+  $(document).on("change", "#id_pincode_id", function () {
+    var pincode = $(this).val();
+    var url = pincode_url + '?pincode=' + pincode;
+    var res = getRemote(url);
+    var pincode_details = res[0];
+    console.log(pincode_details)
+    $("#id_state").val(pincode_details["state"])
+    $("#id_address").text("\n" + pincode_details["city"] + "-" + pincode_details["pincode"] + ",\n" + pincode_details["state"] + ", " + pincode_details["country"])
+  });
+</script>
+{% endblock %}
