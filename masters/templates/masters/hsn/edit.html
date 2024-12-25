@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}{% endblock %}
+{% block body %}
+<form action="" method="post">{% csrf_token %}
+  <h1>EDIT HSN
+    <button type="submit" class="btn btn-outline-cyan btn-pill" style="float: right;margin-right: auto;">
+      SAVE&nbsp; &nbsp;
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right m-0">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12l14 0" />
+        <path d="M13 18l6 -6" />
+        <path d="M13 6l6 6" />
+      </svg></button>
+    <a href="{% url 'masters:hsn_list' %}" class="btn btn-outline-cyan btn-pill"
+      style="float: right;margin-right: 1rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12l14 0" />
+        <path d="M5 12l6 6" />
+        <path d="M5 12l6 -6" />
+      </svg>BACK
+    </a>
+  </h1>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+
+        <div class="col-sm-12 col-md-4 col-lg-3">
+          <label class="form-label required" for="id_hsn_code">HSN Code</label>
+          <input type="text" value="{{hsn.hsn_code}}" class="form-control" name="hsn_code" id="id_hsn_code" required>
+        </div>
+
+        <div class="col-sm-12 col-md-8 col-lg-9">
+          <label class="form-label required" for="id_description">Description</label>
+          <input type="text" value="{{hsn.description}}"class="form-control" name="description" id="id_description" required>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+{% block script %}{% endblock %}

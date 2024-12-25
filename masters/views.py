@@ -4,8 +4,8 @@ import threading
 
 from django.conf import settings
 from django.contrib import messages
+from django.http import HttpResponse
 from django.contrib.auth.models import User
-from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.contrib.auth.forms import UserCreationForm
@@ -19,56 +19,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 from fms.support import remove_office
-from masters.models import Pincodes, Company, Inventory, Pincodes
+from masters.models import HSN, Pincodes, Company, Inventory, Pincodes
 from masters.serializers import CitySerializer, InventorySerializer
 from masters.forms import (
     CompanyModelForm,
+    HSNModelForm,
     InventoryModelForm,
     UserEditModelForm,
     UserModelForm,
 )
-
-
-def import_pincodes():
-    unique_pincodes = {}
-    pincode_objs = []
-    pincode_filepath = os.path.join(settings.BASE_DIR, "static", "pincode.csv")
-    if os.path.exists(pincode_filepath):
-        with open(pincode_filepath, mode="r", newline="") as file:
-            csv_reader = csv.DictReader(file)
-            for row in csv_reader:
-                pincode_city = remove_office(row["OfficeName"])
-                if row["StateName"] not in unique_pincodes.keys():
-                    unique_pincodes[row["StateName"]] = {row["Pincode"]: [pincode_city]}
-                else:
-                    if row["Pincode"] not in unique_pincodes[row["StateName"]].keys():
-                        unique_pincodes[row["StateName"]].update(
-                            {row["Pincode"]: [pincode_city]}
-                        )
-                    else:
-                        if (
-                            pincode_city
-                            not in unique_pincodes[row["StateName"]][row["Pincode"]]
-                        ):
-                            unique_pincodes[row["StateName"]][row["Pincode"]].append(
-                                pincode_city
-                            )
-
-    if len(unique_pincodes) > 0:
-        for states, pincodes in unique_pincodes.items():
-            for pincode, districts in pincodes.items():
-                for district in districts:
-                    pincode_objs.append(
-                        Pincodes(
-                            state=states.strip().title(),
-                            pincode=pincode,
-                            city=district,
-                            country="India",
-                        )
-                    )
-
-    if len(pincode_objs) > 0:
-        Pincodes.objects.bulk_create(pincode_objs, batch_size=1000)
 
 
 @login_required
@@ -185,6 +144,26 @@ def v_inventory_edit(request, pk):
     return render(request, "masters/inventory/edit.html", context)
 
 
+class inventoryData(generics.ListAPIView):
+    api_view = ["GET"]
+    permission_classes = [IsAuthenticated]
+    queryset = Inventory.objects.all()
+    serializer_class = InventorySerializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filterset_fields = [
+        "id",
+        "name",
+        "rate",
+        "qty",
+        "min_stock",
+        "sgst",
+        "cgst",
+        "igst",
+    ]
+    search_fields = "__all__"
+    ordering_fields = "__all__"
+
+
 @login_required
 def v_user_list(request):
     users = User.objects.all()
@@ -228,26 +207,6 @@ def v_user_edit(request, pk):
             return redirect("masters:user_list")
     context = {"user": user}
     return render(request, "masters/user/edit.html", context)
-
-
-class inventoryData(generics.ListAPIView):
-    api_view = ["GET"]
-    permission_classes = [IsAuthenticated]
-    queryset = Inventory.objects.all()
-    serializer_class = InventorySerializer
-    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_fields = [
-        "id",
-        "name",
-        "rate",
-        "qty",
-        "min_stock",
-        "sgst",
-        "cgst",
-        "igst",
-    ]
-    search_fields = "__all__"
-    ordering_fields = "__all__"
 
 
 @login_required
@@ -294,6 +253,49 @@ def v_company_edit(request, pk):
 
 
 @login_required
+def import_pincodes():
+    unique_pincodes = {}
+    pincode_objs = []
+    pincode_filepath = os.path.join(settings.BASE_DIR, "static", "pincode.csv")
+    if os.path.exists(pincode_filepath):
+        with open(pincode_filepath, mode="r", newline="") as file:
+            csv_reader = csv.DictReader(file)
+            for row in csv_reader:
+                pincode_city = remove_office(row["OfficeName"])
+                if row["StateName"] not in unique_pincodes.keys():
+                    unique_pincodes[row["StateName"]] = {row["Pincode"]: [pincode_city]}
+                else:
+                    if row["Pincode"] not in unique_pincodes[row["StateName"]].keys():
+                        unique_pincodes[row["StateName"]].update(
+                            {row["Pincode"]: [pincode_city]}
+                        )
+                    else:
+                        if (
+                            pincode_city
+                            not in unique_pincodes[row["StateName"]][row["Pincode"]]
+                        ):
+                            unique_pincodes[row["StateName"]][row["Pincode"]].append(
+                                pincode_city
+                            )
+
+    if len(unique_pincodes) > 0:
+        for states, pincodes in unique_pincodes.items():
+            for pincode, districts in pincodes.items():
+                for district in districts:
+                    pincode_objs.append(
+                        Pincodes(
+                            state=states.strip().title(),
+                            pincode=pincode,
+                            city=district,
+                            country="India",
+                        )
+                    )
+
+    if len(pincode_objs) > 0:
+        Pincodes.objects.bulk_create(pincode_objs, batch_size=1000)
+
+
+@login_required
 def v_pincode_list(request):
     return render(request, "masters/pincode/list.html", {})
 
@@ -322,3 +324,40 @@ class pincodeData(generics.ListAPIView):
     ]
     search_fields = "__all__"
     ordering_fields = "__all__"
+
+
+@login_required
+def v_hsn_list(request):
+    hsn_codes = HSN.objects.all()
+    context = {"hsn": hsn_codes}
+    return render(request, "masters/hsn/list.html", context)
+
+
+@login_required
+def v_hsn_create(request):
+    if request.method == "POST":
+        form = HSNModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Company Added Successfully")
+            return redirect("masters:hsn_list")
+        else:
+            print(form.errors)
+            for field, err in form.errors.items():
+                messages.warning(
+                    request, request, str(field).replace("_", " ") + " : " + str(err[0])
+                )
+    return render(request, "masters/hsn/create.html", {})
+
+
+@login_required
+def v_hsn_edit(request, pk):
+    hsn = get_object_or_404(HSN, id=pk)
+    if request.method == "POST":
+        form = HSNModelForm(request.POST, instance=hsn)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "HSN Updated Successfully")
+            return redirect("masters:hsn_list")
+    context = {"hsn": hsn}
+    return render(request, "masters/hsn/edit.html", context)

@@ -3,7 +3,7 @@
 {% block style %}{% endblock %}
 {% block body %}
 <form action="" method="post">{% csrf_token %}
-  <h1>ADD COMPANY
+  <h1>EDIT COMPANY
     <button type="submit" class="btn btn-outline-cyan btn-pill" style="float: right;margin-right: auto;">
       SAVE&nbsp; &nbsp;
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -89,12 +89,12 @@
 
         <div class="col-sm-12 col-md-4 col-lg-6 mt-3">
           <label class="form-label required" for="id_bank_branch">Branch Address</label>
-          <textarea class="form-control" name="bank_branch" id="id_bank_branch" cols="30" rows="3" required>{{company.bank_branch}}</textarea>
+          <textarea class="form-control" name="bank_branch" id="id_bank_branch" cols="30" rows="4" required>{{company.bank_branch}}</textarea>
         </div>
 
         <div class="col-sm-12 col-md-6 col-lg-6 mt-3">
           <label class="form-label required" for="id_address">Company Address</label>
-          <textarea class="form-control" name="address" id="id_address" cols="30" rows="3" required>{{company.address}}</textarea>
+          <textarea class="form-control" name="address" id="id_address" cols="30" rows="4" required>{{company.address}}</textarea>
         </div>
 
       </div>
