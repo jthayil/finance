@@ -53,3 +53,11 @@
     </div>
 </div>
 {% endblock %}
+
+{% block script %}
+<script>
+    {% for field, err in form.errors.items %}
+    toastr.error('{{field}} {{ err }}')
+    {% endfor %}
+</script>
+{% endblock %}

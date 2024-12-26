@@ -14,3 +14,13 @@ class UserModelForm(UserCreationForm, ModelForm):
             "password1",
             "password2",
         ]
+
+
+class ProfileModelForm(ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+        ]

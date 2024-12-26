@@ -14,7 +14,7 @@
         <path d="M13 18l6 -6" />
         <path d="M13 6l6 6" />
       </svg></button>
-    <a href="{% url 'masters:user_list' %}" class="btn btn-outline-cyan btn-pill"
+    <a href="{% url 'masters:inventory_list' %}" class="btn btn-outline-cyan btn-pill"
       style="float: right;margin-right: 1rem;">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -60,6 +60,14 @@
         <div class="col-sm-12 col-md-4 col-lg-2 mt-3">
           <label class="form-label required" for="id_qty">Qty</label>
           <input type="tel" class="form-control" name="qty" id="id_qty" required>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-2 mt-3">
+          <label class="form-label required" for="id_hsn_id">HSN</label>
+          <select class="form-control" name="hsn_id" id="id_hsn_id" required>
+            {% for x in hsn %}
+            <option value="{{x.id}}">{{x.hsn_code}} {{x.description}}</option>
+            {% endfor %}
+          </select>
         </div>
       </div>
     </div>

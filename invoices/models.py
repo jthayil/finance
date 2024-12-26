@@ -29,6 +29,7 @@ class Invoices(Model):
         Company, related_name="ship_to", on_delete=CASCADE, null=False, blank=False
     )
     deleted = BooleanField(default=False)
+    discount = PositiveSmallIntegerField(default=0)
     status = PositiveSmallIntegerField(default=0)
     inserted_On = DateTimeField(auto_now_add=True)
     updated_On = DateTimeField(auto_now=True)
@@ -126,7 +127,7 @@ class Invoices(Model):
         return convert_to_words(self.invoice_total_amt())
 
     def __str__(self) -> str:
-        return str(id)
+        return str(self.id)
 
     class Meta:
         verbose_name = "Invoices"
@@ -143,15 +144,22 @@ class InvoiceItems(Model):
     igst = FloatField(default=float(0))
     rate = FloatField(null=False, blank=True)
     qty = FloatField(null=False, blank=True)
+    discount = PositiveSmallIntegerField(default=0)
     deleted = BooleanField(default=False)
     inserted_On = DateTimeField(auto_now_add=True)
     updated_On = DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return str(id)
+        return str(self.id)
+    
+    def qty_rate(self)->float:
+        return self.rate * self.qty
+    
+    def discount_amt(self)->float:
+        return round(self.qty_rate() * (self.discount / 100), 2)
 
     def taxable_amount(self) -> float:
-        return self.rate * self.qty
+        return round(self.qty_rate() - self.discount_amt(), 2)
 
     def tax(self) -> float:
         return self.sgst + self.cgst + self.igst

@@ -5,7 +5,7 @@ path('blog/', include('blog.urls'))
 """
 
 from django.urls import path
-from masters.views import inventoryData, pincodeData, v_company_create, v_company_edit, v_company_list, v_inventory_create, v_inventory_edit, v_inventory_list, v_pincode_create, v_pincode_list, v_user_list, v_user_create, v_user_edit, v_inventory_template, v_inventory_import
+from masters.views import inventoryData, pincodeData, v_company_create, v_company_edit, v_company_list, v_hsn_create, v_hsn_edit, v_hsn_list, v_inventory_create, v_inventory_edit, v_inventory_list, v_pincode_create, v_pincode_list, v_user_list, v_user_create, v_user_edit, v_inventory_template, v_inventory_import
 
 app_name = "masters"
 
@@ -32,6 +32,10 @@ urlpatterns = [
     path("pincode/", v_pincode_list, name="pincode_list"),
     path("pincode/create/", v_pincode_create, name="pincode_create"),
     path("pincode/api/", pincodeData.as_view(), name="pincode_list_api"),
+
+    path("hsn/", v_hsn_list, name="hsn_list"),
+    path("hsn/create/", v_hsn_create, name="hsn_create"),
+    path("hsn/edit/<int:pk>/", v_hsn_edit, name="hsn_edit"),
 ]
 
 
