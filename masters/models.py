@@ -66,7 +66,7 @@ class HSN(Model):
     updated_On = DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return str(f"{self.id} ( {self.hsn_code} )")
+        return self.hsn_code
 
     class Meta:
         verbose_name = "HSN"

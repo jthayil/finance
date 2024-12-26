@@ -60,7 +60,7 @@
                 <table class="table table-sm table hover">
                     <thead style="border-bottom: 2px solid black; border-top: 2px solid black;">
                         <th>ITEMS/SERVICES </th>
-                        <th>HSN/SAC </th>
+                        <th>HSN </th>
                         <th>QTY. </th>
                         <th>RATE</th>
                         <th>TAX</th>
@@ -70,7 +70,7 @@
                         {% for x in invoice_items %}
                         <tr style="border-bottom: 2px solid #dfdfdf;">
                             <td>{{x.item}}</td>
-                            <td>{{x.qty}}</td>
+                            <td>{{x.inventory_id.hsn_id}}</td>
                             <td>{{x.qty}}</td>
                             <td>{{x.rate}}</td>
                             <td>{{x.tax_amt}}</td>

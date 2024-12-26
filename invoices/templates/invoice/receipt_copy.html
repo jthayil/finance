@@ -149,7 +149,7 @@
 
             <tr class="by_1" style="margin-top: 2rem;">
                 <td colspan="2" class="b_0">ITEMS/SERVICES </td>
-                <td colspan="2" class="b_0">HSN/SAC </td>
+                <td colspan="2" class="b_0">HSN</td>
                 <td colspan="2" class="b_0" style="width: 100px;">QTY. </td>
                 <td colspan="2" class="b_0" style="width: 100px;">RATE</td>
                 <td colspan="2" class="b_0">TAX</td>
@@ -159,7 +159,7 @@
             {% for x in invoice_items %}
             <tr class="b_0 bb_1_grey">
                 <td colspan="2" class="b_0">{{x.item}}</td>
-                <td colspan="2" class="b_0">{{x.qty}}</td>
+                <td colspan="2" class="b_0">{{x.inventory_id.hsn_id}}</td>
                 <td colspan="2" class="b_0">{{x.qty}}</td>
                 <td colspan="2" class="b_0">{{x.rate}}</td>
                 <td colspan="2" class="b_0">{{x.tax_amt}}</td>

@@ -38,7 +38,7 @@ def v_inventory_list(request):
 
 @login_required
 def v_inventory_create(request):
-    context = {}
+    context = {"hsn": HSN.objects.all()}
     if request.method == "POST":
         form = InventoryModelForm(request.POST)
         if form.is_valid():
@@ -140,7 +140,7 @@ def v_inventory_edit(request, pk):
             form.save()
             messages.success(request, "Inventory Updated Successfully")
             return redirect("masters:inventory_list")
-    context = {"item": inventory}
+    context = {"item": inventory, "hsn": HSN.objects.all()}
     return render(request, "masters/inventory/edit.html", context)
 
 
