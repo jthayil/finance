@@ -13,8 +13,16 @@
 
 <body>
     <div class="card mx-auto" style="font-size: small;max-width: 512pt;">
-        <a href="{% url 'invoices:invoice_pdf' invoice.id  %}" class="card-header btn w-100">
-            Print Invoice
+        <a href="{% url 'invoices:invoice_pdf' invoice.id  %}" class="card-header btn w-100" style="color: teal; background-color: ghostwhite;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-printer">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />
+                <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
+                <path d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" />
+            </svg>
+            <b>Print Invoice</b>
         </a>
         <div class="row m-4">
             <div class="col-2">
@@ -33,9 +41,9 @@
             <div class="col-12" style="border: 3px solid black;"></div>
             <div class="col-12 d-flex justify-content-between" style="background-color: #e5e5e5;">
                 <div><b>Invoice No.: </b>
-                {% if invoice.status == 1 %}
-                {{invoice.invoice_no}}
-                {% endif %}</div>
+                    {% if invoice.status == 1 %}
+                    {{invoice.invoice_no}}
+                    {% endif %}</div>
                 <div><b>Invoice Date: </b>{{invoice.inserted_On}}</div>
             </div>
             <div class="col-6">

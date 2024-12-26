@@ -61,7 +61,8 @@
                         </svg>
                         GENERATE
                     </button>
-                    <a href="{% url 'invoices:invoice_receipt' invoice.id %}"  class="btn btn-outline-purple" target="_blank" >
+                    <a href="{% url 'invoices:invoice_receipt' invoice.id %}" class="btn btn-outline-purple"
+                        target="_blank">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-eye-edit">
@@ -92,6 +93,7 @@
             <th>Item</th>
             <th>Rate</th>
             <th>Qty</th>
+            <th>Discount %</th>
             <th>Amount</th>
             <th>SGST %</th>
             <th>CGST %</th>
@@ -140,41 +142,46 @@
                 { data: 'item' },
                 { data: 'rate' },
                 { data: 'qty' },
+                { data: 'discount' },
                 {
                     data: "amt",
                     render: function (data, type, row) {
                         var qty = row['qty'];
                         var rate = row['rate'];
-                        return qty * rate
+                        var amt = qty * rate;
+                        return amt - row['discount_amt']
                     }
                 },
                 { data: 'sgst' },
                 { data: 'cgst' },
                 { data: 'igst' },
-                {
-                    data: "total",
-                    render: function (data, type, row) {
-                        var qty = row['qty'];
-                        var rate = row['rate'];
-                        var sgst = row['sgst'];
-                        var cgst = row['cgst'];
-                        var igst = row['igst'];
-                        var amt = qty * rate;
-                        var ttl = amt + (amt * ((sgst + cgst + igst) / 100))
-                        return ttl.toFixed(2);
-                    }
-                },
+                { data: 'total_amt' },
+                // {
+                //     data: "total",
+                //     render: function (data, type, row) {
+                //         var qty = row['qty'];
+                //         var rate = row['rate'];
+                //         var sgst = row['sgst'];
+                //         var cgst = row['cgst'];
+                //         var igst = row['igst'];
+                //         var amt = qty * rate;
+                //         var dis_amt = amt - row['discount_amt'];
+                //         var ttl = dis_amt + (dis_amt * ((sgst + cgst + igst) / 100));
+                //         return ttl.toFixed(2);
+                //     }
+                // },
                 {
                     data: "",
                     render: function (data, type, row) {
                         return `
-                        <button type="button" class="text-danger del btn btn-ghost-light" data-id="`+ row['id'] + `">
-                        <svg style="margin-right:0px" xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7h16" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /><path d="M10 12l4 4m0 -4l-4 4" /></svg></button>`
+                        <a type="button" class="text-danger del" data-id="`+ row['id'] + `">
+                        <svg style="margin-right:0px" xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7h16" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /><path d="M10 12l4 4m0 -4l-4 4" /></svg></a>`
                     }
                 },
             ],
             createdRow: function (row, data, dataIndex) {
                 // $(row).addClass('masters_index palm_cursor').attr('data-id', data.id);
+                $('td:last', row).css('text-align', '-webkit-center');
             }
         });
 

@@ -31,15 +31,19 @@
                     <input value="{{invoice_item.rate|default:0}}" type="tel" name="rate" id="id_rate"
                         class="form-control">
                 </div>
-                <div class="col-sm-12 col-md-2 col-lg-2">
+                <div class="col-sm-12 col-md-2 col-lg-1">
+                    <label class="form-label" for="id_discount">Discount</label>
+                    <input value="{{invoice_item.discount|default:0}}" type="number" name="discount" id="id_discount" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-1">
                     <label class="form-label" for="id_sgst">SGST</label>
                     <input value="{{invoice_item.sgst|default:0}}" type="number" name="sgst" id="id_sgst" class="form-control" {% if igst_flag %}readonly{% endif %}>
                 </div>
-                <div class="col-sm-12 col-md-2 col-lg-2">
+                <div class="col-sm-12 col-md-2 col-lg-1">
                     <label class="form-label" for="id_cgst">CGST</label>
                     <input value="{{invoice_item.cgst|default:0}}" type="number" name="cgst" id="id_cgst" class="form-control" {% if igst_flag %}readonly{% endif %}>
                 </div>
-                <div class="col-sm-12 col-md-2 col-lg-2">
+                <div class="col-sm-12 col-md-2 col-lg-1">
                     <label class="form-label" for="id_igst">IGST</label>
                     <input value="{{invoice_item.igst|default:0}}" type="number" name="igst" id="id_igst" class="form-control" {% if not igst_flag %}readonly{% endif %}>
                 </div>
@@ -100,6 +104,7 @@
         var url = inventory_url + '?name=' + item_name;
         var res = getRemote(url);
         var item = res[0];
+        $("#id_inventory_id").val(item["id"]);
         if (igst_flag){
             $("#id_igst").val(item["igst"]);
         } else {
