@@ -5,15 +5,15 @@ path('blog/', include('blog.urls'))
 """
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from accounts.views import v_signup_view, v_homepage, v_logout_view, v_profile
+from accounts.views import v_profile_edit, v_signup_view, v_logout_view, v_profile
 
 app_name = "accounts"
 
 
 urlpatterns = [
-    path("profile/", v_homepage, name="homepage"),
-    path("details/", v_profile, name="profile"),
-    path("login/", auth_views.LoginView.as_view(), name="login"),
+    path("profile/", v_profile, name="profile"),
+    path("profile/edit/", v_profile_edit, name="profile_edit"),
+    path("login/", auth_views.LoginView.as_view(next_page="/"), name="login"),
     path("logout/", v_logout_view, name="logout"),
     path("signup/", v_signup_view, name="signup"),
     path(

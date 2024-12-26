@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}{% endblock %}
+{% block body %}
+<form method="post">{% csrf_token %}
+    <h1>EDIT PROFILE
+        <button type="submit" class="btn btn-outline-cyan btn-pill" style="float: right;margin-right: auto;">
+            SAVE&nbsp; &nbsp;
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right m-0">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M5 12l14 0" />
+                <path d="M13 18l6 -6" />
+                <path d="M13 6l6 6" />
+            </svg></button>
+        <a href="{% url 'accounts:profile' %}" class="btn btn-outline-cyan btn-pill"
+            style="float: right;margin-right: 1rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M5 12l14 0" />
+                <path d="M5 12l6 6" />
+                <path d="M5 12l6 -6" />
+            </svg>BACK
+        </a>
+    </h1>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <label for="id_first_name" class="form-label">First Name</label>
+                    <input value="{{user.first_name}}" type="text" class="form-control" name="first_name"
+                        id="id_first_name">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <label for="id_last_name" class="form-label">Last Name</label>
+                    <input value="{{user.last_name}}" type="text" class="form-control" name="last_name"
+                        id="id_last_name">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <label for="id_email" class="form-label">Email</label>
+                    <input value="{{user.email}}" type="email" class="form-control" name="email" id="id_email">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

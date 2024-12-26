@@ -3,8 +3,9 @@
 {% block style %}{% endblock %}
 {% block body %}
 <div class="card">
-    <div class="card-header">
+    <div class="card-header justify-content-between">
         PROFILE
+        <a href="{% url 'accounts:profile_edit' %}" class="btn btn-outline-cyan btn-pill" style="float: right;">Edit</a>
     </div>
     <div class="card-body">
         <div class="datagrid">
