@@ -54,7 +54,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
 
     def get_taxable_amt(self, obj):
         return sum(
-            item.taxable_amount()
+            item.taxable_amt()
             for item in InvoiceItems.objects.filter(invoice_id=obj.id)
         )
 

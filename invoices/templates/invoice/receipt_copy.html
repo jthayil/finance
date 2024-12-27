@@ -161,28 +161,28 @@
                 <td colspan="2" class="b_0">{{x.item}}</td>
                 <td colspan="2" class="b_0">{{x.inventory_id.hsn_id}}</td>
                 <td colspan="2" class="b_0">{{x.qty}}</td>
-                <td colspan="2" class="b_0">{{x.rate}}</td>
-                <td colspan="2" class="b_0">{{x.tax_amt}}</td>
-                <td colspan="2" class="b_0">{{x.total_amount}}</td>
+                <td colspan="2" class="b_0">{{x.discount_taxable_amt}}</td>
+                <td colspan="2" class="b_0">{{x.discount_tax_amt}}</td>
+                <td colspan="2" class="b_0">{{x.discount_total_amount}}</td>
             </tr>
             {% endfor %}
 
             <tr class="b_0 bb_1_black">
                 <td colspan="4" class="b_0">SUBTOTAL</td>
                 <td colspan="4" class="b_0">{{invoice.invoice_qty}}</td>
-                <td colspan="2" class="b_0">{{invoice.invoice_tax}}</td>
-                <td colspan="2" class="b_0">{{invoice.invoice_total_amt}}</td>
+                <td colspan="2" class="b_0">{{invoice.item_discount_tax_amt}}</td>
+                <td colspan="2" class="b_0">{{invoice.item_discount_total_amt}}</td>
             </tr>
 
             <tr class="b_0">
-                <td class="b_0" rowspan="{{ invoice.tax_def|length|add:'2' }}" colspan="8" style="vertical-align:top;">
+                <td class="b_0" rowspan="{{ invoice.tax_def|length|add:'3' }}" colspan="8" style="vertical-align:top;">
                     TERMS AND CONDITIONS<br>1. Goods
                     once sold will not be taken back or exchanged
                     <br>2. All disputes are subject to Mumbai
                     jurisdiction only
                 </td>
                 <td class="b_0" colspan="2">TAXABLE AMOUNT</td>
-                <td class="b_0" colspan="2">{{invoice.invoice_total}}</td>
+                <td class="b_0" colspan="2">{{invoice.item_discount_taxable}}</td>
             </tr>
 
             {% for x in invoice.tax_def %}
@@ -195,8 +195,13 @@
             {% endfor %}
 
             <tr class="b_0">
+                <td class="b_0" colspan="2">DISCOUNT</td>
+                <td class="b_0" colspan="2">{{invoice.discount_amt}}</td>
+            </tr>
+
+            <tr class="b_0">
                 <td colspan="2" class="b_0 by_1">TOTAL AMOUNT</td>
-                <td colspan="2" class="b_0 by_1">{{invoice.invoice_total_amt}}</td>
+                <td colspan="2" class="b_0 by_1">{{invoice.invoice_total}}</td>
             </tr>
 
             <tr class="b_0">

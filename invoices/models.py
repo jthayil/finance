@@ -34,19 +34,62 @@ class Invoices(Model):
     inserted_On = DateTimeField(auto_now_add=True)
     updated_On = DateTimeField(auto_now=True)
 
-    def invoice_total(self) -> float:
+    def item_taxable_amt(self) -> float:
         return sum(
-            item.taxable_amount()
+            item.taxable_amt()
             for item in InvoiceItems.objects.filter(invoice_id=self.id)
         )
 
-    def invoice_qty(self) -> int:
+    def item_discount_amt(self) -> float:
+        return sum(
+            item.discount_amt()
+            for item in InvoiceItems.objects.filter(invoice_id=self.id)
+        )
+
+    def item_discount_taxable(self) -> float:
+        return sum(
+            item.discount_taxable_amt()
+            for item in InvoiceItems.objects.filter(invoice_id=self.id)
+        )
+
+    def item_tax(self) -> float:
+        return sum(
+            item.tax() for item in InvoiceItems.objects.filter(invoice_id=self.id)
+        )
+
+    def item_tax_amt(self) -> float:
+        return sum(
+            item.tax_amt() for item in InvoiceItems.objects.filter(invoice_id=self.id)
+        )
+
+    def item_discount_tax_amt(self) -> float:
+        return sum(
+            item.discount_tax_amt() for item in InvoiceItems.objects.filter(invoice_id=self.id)
+        )
+
+    def item_total_amt(self) -> float:
+        return sum(
+            item.total_amount() for item in InvoiceItems.objects.filter(invoice_id=self.id)
+        )
+
+    def item_discount_total_amt(self) -> float:
+        return sum(
+            item.discount_total_amount() for item in InvoiceItems.objects.filter(invoice_id=self.id)
+        )
+
+    def item_qty(self) -> int:
         return (
             InvoiceItems.objects.filter(invoice_id=self.id).aggregate(total=Sum("qty"))[
                 "total"
             ]
             or 0
         )
+
+    def discount_amt(self) -> float:
+        return round(self.item_discount_total_amt() * (self.discount / 100), 2)
+    
+    def invoice_total(self) -> float:
+        return self.item_discount_total_amt() - self.discount_amt()
 
     def tax_def(self):
         l_tax_amt = (
@@ -111,20 +154,8 @@ class Invoices(Model):
                 )
         return new_tax_amt_dict
 
-    def invoice_tax(self):
-        return sum(
-            item.tax_amt() for item in InvoiceItems.objects.filter(invoice_id=self.id)
-        )
-
-    def invoice_total_amt(self):
-        res = sum(
-            item.total_amount()
-            for item in InvoiceItems.objects.filter(invoice_id=self.id)
-        )
-        return float(res).__round__(2)
-
     def invoice_total_in_words(self):
-        return convert_to_words(self.invoice_total_amt())
+        return convert_to_words(self.invoice_total())
 
     def __str__(self) -> str:
         return str(self.id)
@@ -151,37 +182,30 @@ class InvoiceItems(Model):
 
     def __str__(self) -> str:
         return str(self.id)
-    
-    def qty_rate(self)->float:
-        return self.rate * self.qty
-    
-    def discount_amt(self)->float:
-        return round(self.qty_rate() * (self.discount / 100), 2)
 
-    def taxable_amount(self) -> float:
-        return round(self.qty_rate() - self.discount_amt(), 2)
+    def taxable_amt(self) -> float:
+        return round(self.rate * self.qty, 2)
+
+    def discount_amt(self) -> float:
+        return round(self.taxable_amt() * (self.discount / 100), 2)
+
+    def discount_taxable_amt(self) -> float:
+        return round(self.taxable_amt() - self.discount_amt(), 2)
 
     def tax(self) -> float:
         return self.sgst + self.cgst + self.igst
 
-    def sgst_tax_amt(self) -> float:
-        return (self.sgst / 100) * self.taxable_amount
-
-    def cgst_tax_amt(self) -> float:
-        return (self.cgst / 100) * self.taxable_amount
-
-    def igst_tax_amt(self) -> float:
-        return (self.igst / 100) * self.taxable_amount
-
     def tax_amt(self) -> float:
-        amt = self.taxable_amount()
-        tax = self.tax()
-        return round((tax / 100) * amt, 2)
+        return round((self.tax() / 100) * self.taxable_amt(), 2)
+
+    def discount_tax_amt(self) -> float:
+        return round((self.tax() / 100) * self.discount_taxable_amt(), 2)
 
     def total_amount(self) -> float:
-        amt = self.taxable_amount()
-        tax_amt = self.tax_amt()
-        return amt + tax_amt
+        return self.taxable_amt() + self.tax_amt()
+
+    def discount_total_amount(self) -> float:
+        return self.discount_taxable_amt() + self.discount_tax_amt()
 
     class Meta:
         verbose_name = "Invoice Item"

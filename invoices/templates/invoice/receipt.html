@@ -72,16 +72,16 @@
                             <td>{{x.item}}</td>
                             <td>{{x.inventory_id.hsn_id}}</td>
                             <td>{{x.qty}}</td>
-                            <td>{{x.rate}}</td>
-                            <td>{{x.tax_amt}}</td>
-                            <td>{{x.total_amount}}</td>
+                            <td>{{x.discount_taxable_amt}}</td>
+                            <td>{{x.discount_tax_amt}}</td>
+                            <td>{{x.discount_total_amount}}</td>
                         </tr>
                         {% endfor %}
                         <tr style="border-bottom: 2px solid black; border-top: 2px solid black;">
                             <td colspan="2">SUBTOTAL</td>
                             <td colspan="2">{{invoice.invoice_qty}}</td>
-                            <td>₹ {{invoice.invoice_tax}}</td>
-                            <td>₹ {{invoice.invoice_total_amt}}</td>
+                            <td>₹ {{invoice.item_discount_tax_amt}}</td>
+                            <td>₹ {{invoice.item_discount_total_amt}}</td>
                         </tr>
                         <tr>
                             <td rowspan="{{ invoice.tax_def|length|add:'3' }}" style="border: 0px !important;"
@@ -91,7 +91,7 @@
                                 jurisdiction only
                             </td>
                             <td>TAXABLE AMOUNT</td>
-                            <td>{{invoice.invoice_total}}</td>
+                            <td>{{invoice.item_discount_taxable}}</td>
                         </tr>
                         {% for x in invoice.tax_def %}
                         <tr>
@@ -101,9 +101,13 @@
                             {% endfor %}
                         </tr>
                         {% endfor %}
+                        <tr>
+                            <td>DISCOUNT</td>
+                            <td>-{{invoice.discount_amt}}</td>
+                        </tr>
                         <tr style="border-top: 2px solid black;">
                             <td>TOTAL AMOUNT</td>
-                            <td>{{invoice.invoice_total_amt}}</td>
+                            <td>{{invoice.invoice_total}}</td>
                         </tr>
                         <tr style="border-top: 2px solid black;">
                             <td style="border: 0px !important;"></td>
