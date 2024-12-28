@@ -32,17 +32,24 @@ class InvoiceItemSerializer(serializers.ModelSerializer):
         fields = ["amount", "tax", "taxable_amount"]
 
 
-class InvoiceSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
-    buyer = serializers.CharField()
-    inserted_On = serializers.DateTimeField()
-    invoice_no = serializers.IntegerField()
-    status = serializers.IntegerField()
-
-    qty = serializers.SerializerMethodField()
-    taxable_amt = serializers.SerializerMethodField()
-    tax = serializers.SerializerMethodField()
+class InvoicePaymentSerializer(serializers.ModelSerializer):
+    received_amt= serializers.FloatField()
     total_amt = serializers.SerializerMethodField()
+
+    def get_total_amt(self, obj):
+        return obj.invoice_total()
+
+    class Meta:
+        model = Invoices
+        fields = ["id", "invoice_no", "received_amt", "total_amt"]
+
+
+class InvoiceSerializer(serializers.ModelSerializer):
+    qty = serializers.SerializerMethodField()
+    taxable_amt = serializers.FloatField(source='item_discount_taxable')
+    # tax = serializers.SerializerMethodField()
+    total_amt = serializers.FloatField(source='invoice_total')
+    tax = serializers.FloatField(source='item_discount_tax_amt')
 
     def get_qty(self, obj):
         return (
@@ -51,24 +58,6 @@ class InvoiceSerializer(serializers.ModelSerializer):
             ]
             or 0
         )
-
-    def get_taxable_amt(self, obj):
-        return sum(
-            item.taxable_amt()
-            for item in InvoiceItems.objects.filter(invoice_id=obj.id)
-        )
-
-    def get_tax(self, obj):
-        return sum(
-            item.tax_amt() for item in InvoiceItems.objects.filter(invoice_id=obj.id)
-        )
-
-    def get_total_amt(self, obj):
-        amt = sum(
-            item.total_amount()
-            for item in InvoiceItems.objects.filter(invoice_id=obj.id)
-        ) + self.get_tax(obj)
-        return amt.__round__(2)
 
     class Meta:
         model = Invoices

@@ -1,0 +1,159 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}{% endblock %}
+{% block body %}
+<form action="" method="post">{% csrf_token %}
+    <div class="card">
+        <div class="card-header justify-content-between py-2">
+            <b>NEW PAYMENT</b>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-small">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                    <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M14 4l0 4l-6 0l0 -4" />
+                </svg>
+                SAVE
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                    <label class="form-label" for="id_buyer_id">Invoice No</label>
+                    <select name="buyer_id" id="id_buyer_id" required class="form-select">
+                        <option>Select Company</option>
+                        {% for x in company %}
+                        <option value="{{x.id}}">{{x}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                    <label class="form-label" for="id_utr_file">UTR</label>
+                    <input class="form-control" type="file" required name="utr_file" id="id_utr_file">
+                    <input value="{{request.user.id}}" type="hidden" name="user" id="id_user">
+                </div>
+                <div class="col-12 mb-3 hide" id="id_table_div">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Invoice No</th>
+                                <th>Invoice Amt</th>
+                                <th>Balance Amt</th>
+                                <th>TDS %</th>
+                                <th>TDS Amt</th>
+                                <th>Allocated Amt</th>
+                                <th>Pending Amt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="id_table_tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-blur fade" id="modal-small" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-title">Generate Payment</div>
+                    <div>Proceed with payment register ? </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger me-auto" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="id_submit" class="btn btn-primary"
+                        data-bs-dismiss="modal">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block script %}
+<script>
+    var pending_payments_url = `{% url 'payments:payment_pending' 0 %}`;
+    var payments_url = `{% url 'payments:payment_create' %}`;
+    var invoice_payments_url = `{% url 'payments:invoicepayment_create' %}`;
+
+    $(document).on("change", "#id_buyer_id", function () {
+        var company_id = $(this).val();
+        $("#id_table_tbody").empty();
+        $("#id_table_tbody, #id_table_div").hide();
+
+        if (Number.isInteger(parseInt(company_id))) {
+            var res = getRemote(rmv_secondlast(pending_payments_url) + $(this).val() + "/");
+            if (res.length > 0) {
+                res.forEach(function (item) {
+                    var pending_amt = item.total_amt - item.received_amt;
+                    $("#id_table_tbody").append(`<tr id="inv_` + item.id + `" data-pending_amt="` + pending_amt + `" data-id="` + item.id + `" data-total_amt="` + item.total_amt + `" >
+                        <td><input type="checkbox" class="form-check-input chekky" value="` + item.id + `" data-id="` + item.id + `" name="invoice_id" id="id_invoice_id_` + item.id + `"></td>
+                        <td>` + item.invoice_no + `</td>
+                        <td>` + item.total_amt + `</td>
+                        <td>` + pending_amt + `</td>
+                        <td><input type="number" class="form-control form-control-sm tds" value="0" min="0" max="100" name="tds_percent" data-id="` + item.id + `" id="id_tds_percent_` + item.id + `"></td>
+                        <td data-id="` + item.id + `" id="id_tds_` + item.id + `"></td>
+                        <td><input type="tel" class="form-control form-control-sm allo" data-id="` + item.id + `" max="` + pending_amt + `" name="allocated_amt" id="id_allocated_amt_` + item.id + `"></td>
+                        <td id="id_pending_amt_` + item.id + `"></td>`);
+                });
+                $("#id_table_tbody, #id_table_div").show();
+            }
+        }
+    });
+
+    $(document).on("click", "#id_submit", function () {
+        var status = true;
+        var payment_data = new FormData()
+        payment_data.append('csrfmiddlewaretoken', '{{ csrf_token }}')
+        payment_data.append('buyer_id', $("#id_buyer_id").val())
+        payment_data.append('user', $("#id_user").val())
+        payment_data.append('utr_file', $('#id_utr_file')[0].files[0])
+        payment_form = getRemote(payments_url, "POST", payment_data, { 'X-CSRFToken': csrftoken }, "json", true, false, false)
+
+        if (payment_form.status) {
+            $('.chekky').each(function () {
+                var the_id = $(this).data("id");
+                if ($(this).is(':checked') != false) {
+                    var data = new FormData()
+                    data.append('csrfmiddlewaretoken', '{{ csrf_token }}')
+                    data.append('payment_id', payment_form.data.id)
+                    data.append('invoice_id', $("#id_invoice_id_" + the_id).val())
+                    data.append('allocated_amt', $("#id_allocated_amt_" + the_id).val())
+                    data.append('tds_percent', $("#id_tds_percent_" + the_id).val())
+                    inv_payment_form = getRemote(invoice_payments_url, "POST", data, { 'X-CSRFToken': csrftoken }, "json", true, false, false)
+                    if (inv_payment_form.status) {
+
+                    } else { status = false; toastr.error(inv_payment_form.data) }
+                }
+            });
+        } else { status = false; toastr.error(payment_form.data) }
+
+        if (status == true) { window.location.href = "{% url 'payments:payment_list' %}"; }
+    });
+
+    $(document).on("change", ".tds", function () {
+        var invoice_id = $(this).data('id');
+        var total_amt = $("#inv_" + invoice_id).data('total_amt');
+        var pending_amt = $("#inv_" + invoice_id).data('pending_amt');
+        var tds_percent = $("#id_tds_percent_" + invoice_id).val()
+        $("#id_tds_" + invoice_id).empty();
+        var tds_amt = (tds_percent / 100) * total_amt
+        $("#id_tds_" + invoice_id).html(tds_amt.toFixed(2));
+    });
+
+    $(document).on("change", ".allo", function () {
+        var invoice_id = $(this).data('id');
+        var total_amt = $("#inv_" + invoice_id).data('total_amt');
+        var pending_amt = $("#inv_" + invoice_id).data('pending_amt');
+        var allo_amt = $("#id_allocated_amt_" + invoice_id).val()
+        $("#id_pending_amt_" + invoice_id).empty();
+        var tds_amt = pending_amt - allo_amt
+        if (allo_amt == 0) {
+            $("#id_pending_amt_" + invoice_id).html("");
+        } else {
+            $("#id_pending_amt_" + invoice_id).html(tds_amt.toFixed(2));
+        }
+    });
+</script>
+{% endblock %}

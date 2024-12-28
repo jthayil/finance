@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+{% block title %}Homepage{% endblock %}
+{% block style %}
+<link
+    href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/fh-4.0.1/sc-2.4.3/sb-1.8.1/datatables.min.css"
+    rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<h1>PAYMENTS
+    <a href="{% url 'payments:payment_create' %}" class="btn btn-outline-cyan btn-pill" style="float: right;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 5l0 14" />
+            <path d="M5 12l14 0" />
+        </svg>CREATE
+    </a>
+</h1>
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table id="example1" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>CUSTOMER</th>
+                        <th>INVOICE NO</th>
+                        <th>AMOUNT</th>
+                        <th>PAYMENT DATE</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script
+    src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/fh-4.0.1/sc-2.4.3/sb-1.8.1/datatables.min.js"></script>
+<script>
+    $('#example1').DataTable({
+        ajax: { url: "{% url 'payments:invoicepayment_api' %}", dataSrc: '', },
+        "processing": true,
+        columns: [
+            { data: 'payment_id' },
+            { data: 'buyer' },
+            { data: 'invoice_id' },
+            { data: 'allocated_amt' },
+            { data: 'inserted_On' },
+        ],
+    });
+</script>
+{% endblock %}
