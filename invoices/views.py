@@ -62,8 +62,10 @@ def v_invoice_generate(request, pk):
     if request.method == "POST":
         f_invoice = InvoicesModelForm(request.POST, instance=invoice)
         if f_invoice.is_valid():
-            f_invoice.save()
-            invoice = get_object_or_404(Invoices, id=pk)
+            items = InvoiceItems.objects.filter(invoice_id=pk)
+            for item in items:
+                item.inventory_id.qty -= item.qty
+                item.inventory_id.save()
             invoice.status = 1
             invoice.save()
             messages.success(request, "Invoice Generated")

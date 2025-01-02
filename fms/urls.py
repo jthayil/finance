@@ -14,6 +14,7 @@ router = DefaultRouter()
 urlpatterns = [
     path("", include("invoices.urls")),
     path("accounts/", include("accounts.urls")),
+    path("payments/", include("payments.urls")),
     path("masters/", include("masters.urls")),
     path('admin/', admin.site.urls),
 ]

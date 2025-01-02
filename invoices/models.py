@@ -89,7 +89,7 @@ class Invoices(Model):
         return round(self.item_discount_total_amt() * (self.discount / 100), 2)
     
     def invoice_total(self) -> float:
-        return self.item_discount_total_amt() - self.discount_amt()
+        return round(self.item_discount_total_amt() - self.discount_amt(), 2)
 
     def tax_def(self):
         l_tax_amt = (
@@ -158,7 +158,7 @@ class Invoices(Model):
         return convert_to_words(self.invoice_total())
 
     def __str__(self) -> str:
-        return str(self.id)
+        return str(self.invoice_no)
 
     class Meta:
         verbose_name = "Invoices"

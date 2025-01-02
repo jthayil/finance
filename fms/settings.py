@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "invoices.apps.InvoicesConfig",
     "masters.apps.MastersConfig",
+    "payments.apps.PaymentsConfig",
 ]
 
 MIDDLEWARE = [
